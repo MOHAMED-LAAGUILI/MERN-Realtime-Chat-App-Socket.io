@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
 import authRoute from "./routes/auth.route.js"
 import messageRoute from "./routes/message.route.js"
-
+import cors from 'cors';
 import { connectDB } from './db/db.js';
 
 // Initialize dotenv and load environment variables
@@ -15,8 +15,15 @@ const app = express();
 // Middleware setup
 app.use(express.json());      // For parsing JSON bodies
 app.use(cookieParser())
-
-
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "http://localhost:5174"
+    ], // List of allowed origins
+    credentials: true, // Allow credentials (cookies, headers, etc.)
+  })
+);
 // Global error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
